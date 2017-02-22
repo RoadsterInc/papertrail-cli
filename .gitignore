@@ -9,3 +9,4 @@ vendor
 *.gem
 # Ignore ruby versioning
 .ruby-*
+.idea
