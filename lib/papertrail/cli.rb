@@ -159,8 +159,8 @@ module Papertrail
       query_range(:min_id => options[:min_id], :max_time => options[:max_id])
     end
 
-    def query_range(options)
-      connection.each_event(@query, query_options.merge(options)) do |event|
+    def query_range(range_options)
+      connection.each_event(@query, query_options.merge(range_options)) do |event|
         if options[:json]
           output_raw_json(event.data)
         else
@@ -228,8 +228,8 @@ module Papertrail
       <<-EOF
 
   Usage:
-    papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
-      [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
+    papertrail [-f] [--min-time time] [--max-time time] [--min-id id] [--max-id id] [-g group]
+      [-S search] [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
       [--force-color] [--version] [--] [query]
 
   Examples:
