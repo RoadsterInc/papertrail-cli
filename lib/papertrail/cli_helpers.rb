@@ -23,9 +23,11 @@ module Papertrail
       new_hash
     end
 
-    def set_min_max_time!(opts, q_opts)
+    def set_min_max_opts!(opts, q_opts)
       q_opts[:min_time] = parse_time(opts[:min_time]).to_i if opts[:min_time]
       q_opts[:max_time] = parse_time(opts[:max_time]).to_i if opts[:max_time]
+      q_opts[:min_id] = opts[:min_id] if opts[:min_id]
+      q_opts[:max_id] = opts[:max_id] if opts[:max_id]
     end
 
     def parse_time(tstring)

@@ -50,6 +50,12 @@ module Papertrail
         opts.on("--max-time MAX", "Latest time to search from") do |v|
           options[:max_time] = v
         end
+        opts.on("--min-id MIN", "Earliest id to search from") do |v|
+          options[:min_id] = v
+        end
+        opts.on("--max-id MAX", "Latest id to search from") do |v|
+          options[:max_id] = v
+        end
         opts.on("-d", "--delay SECONDS", "Delay between refresh (2)") do |v|
           options[:delay] = v.to_i
         end
@@ -130,8 +136,10 @@ module Papertrail
         end
       elsif options[:min_time]
         query_time_range
+      elsif options[:min_id]
+        query_id_range
       else
-        set_min_max_time!(options, query_options)
+        set_min_max_opts!(options, query_options)
         search_query = Papertrail::SearchQuery.new(connection, @query, query_options)
         display_results(search_query.next_results_page)
       end
@@ -144,7 +152,15 @@ module Papertrail
         max_time = parse_time(options[:max_time])
       end
 
-      connection.each_event(@query, query_options.merge(:min_time => min_time, :max_time => max_time)) do |event|
+      query_range(:min_time => min_time, :max_time => max_time)
+    end
+
+    def query_id_range
+      query_range(:min_id => options[:min_id], :max_time => options[:max_id])
+    end
+
+    def query_range(options)
+      connection.each_event(@query, query_options.merge(options)) do |event|
         if options[:json]
           output_raw_json(event.data)
         else
