@@ -156,7 +156,7 @@ module Papertrail
     end
 
     def query_id_range
-      query_range(:min_id => options[:min_id], :max_time => options[:max_id])
+      query_range(:min_id => options[:min_id], :max_id => options[:max_id])
     end
 
     def query_range(range_options)

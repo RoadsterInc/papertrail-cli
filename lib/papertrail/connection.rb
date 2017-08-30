@@ -194,7 +194,7 @@ module Papertrail
         search_results.events.each do |event|
           # If we've found an event beyond what we were looking for, we're done
           break if max_time && event.received_at > max_time
-          break if max_id && event.id > max_id
+          break if max_id && event.data['id'] > max_id
 
           block.call(event)
         end
